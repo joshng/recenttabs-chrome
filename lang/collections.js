@@ -216,3 +216,5 @@ Set.WithKeys = function(key_fn) {
 var StringSet = Set.WithKeys(Prototype.K);
 
 var ItemIdSet = Set.WithKeys(function(item) { return item.id; });
+
+function $w(string) { return string.split(/\s+/); }

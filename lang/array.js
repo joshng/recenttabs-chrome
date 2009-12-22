@@ -434,7 +434,7 @@ Array.from = $A;
     toArray:   clone,
     size:      size,
     inspect:   inspect,
-    toJSON:    toJSON
+    // toJSON:    toJSON
   });
 
   // fix for opera

@@ -273,7 +273,7 @@
   extend(Object, {
     extend:        extend,
     inspect:       inspect,
-    toJSON:        toJSON,
+    // toJSON:        toJSON,
     toQueryString: toQueryString,
     toHTML:        toHTML,
     keys:          keys,

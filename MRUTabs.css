@@ -1,0 +1,38 @@
+#__mrutab_box {
+  position: fixed !important;
+  top: 2px !important;
+  right: 2px !important;
+  background-color: white !important;
+  border: 2px outset gray !important;
+  z-index: 100000 !important;
+  margin: 0 !important;
+}
+
+#__mrutab_menu, #__mrutab_menu td {
+  background-color: white !important;
+  color: #555 !important;
+  padding: 2px 6px !important;
+  margin: 0 !important;
+  /* font-family: "lucida grande", helvetica, sans-serif !important; */
+  font-family: monaco, courier, monotype !important;
+  font-size: 12px !important;
+  font-style: italic !important;
+  text-align: left !important;
+}
+
+#__mrutab_menu td {
+  opacity: 0.6 !important;
+}
+
+#__mrutab_menu td.__mrutab_tab_url {
+  font-size: 11px !important;
+}
+.__mrutab_tab_title {
+  padding-right: 20px !important;
+}
+#__mrutab_menu tr.__mrutab_hilite td {
+  background-color: yellow !important;
+  color: #222 !important;
+  font-style: normal !important;
+  opacity: 1.0 !important;
+}

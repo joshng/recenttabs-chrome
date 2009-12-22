@@ -344,7 +344,8 @@ var Hash = Object.newSubclass('Hash', Enumerable, (function() {
    *      // -> {"a": "apple", "b": 23, "c": false}
   **/
   function toJSON() {
-    return Object.toJSON(this.toObject());
+    // return Object.toJSON(this.toObject());
+    return this._object;
   }
 
   /**
