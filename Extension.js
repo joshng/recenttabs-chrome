@@ -1,35 +1,24 @@
 var MRUTabManager = (function() {
-  var MRUList = Array.newSubclass({
-    insert: function(item) {
-      this.remove(item);
-      this.unshift(item);
-    }
-  });
-
-  var TabWrapper = Object.newSubclass();
-
-  Object.extend(TabWrapper, {
-    byId: new HashWithDefault(TabWrapper.factory),
-    get: function(tab) {
-      var wrapper = TabWrapper.byId.get(tab.id);
-      wrapper.tab = tab;
-      return wrapper;
+  var TabInfo = Object.newSubclass({
+    update: function(tab) {
+      this.tab = tab;
     },
-    remove: function(tabId) {
-      return this.byId.unset(tabId);
+    onSelected: function(tab) {
+      this.update(tab);
+      this.selectedAt = new Date().getTime();
     }
   });
+
+  var infoById = new HashWithDefault(TabInfo.factory);
 
   chrome.tabs.onUpdated.addListener(function(tabId) {
     chrome.tabs.get(tabId, function(tab) {
-      TabWrapper.get(tab);
+      infoById.get(tab.id).update(tab);
     });
   });
 
-  var mruListsByWindowId = new HashWithDefault(MRUList.factory);
-
   function onTabSelected(tab) {
-    mruListsByWindowId.get(tab.windowId).insert(TabWrapper.get(tab))
+    infoById.get(tab.id).onSelected(tab);
   }
 
   chrome.windows.getAll({populate: true}, function(windows) {
@@ -42,11 +31,8 @@ var MRUTabManager = (function() {
     chrome.tabs.get(tabId, onTabSelected);
   });
 
-
   function removeTabId(tabId) {
-    var wrapper = TabWrapper.byId.get(tabId);
-    if (!wrapper) return;
-    mruListsByWindowId.get(wrapper.tab.windowId).remove(wrapper);
+    tabInfoById.unset(tabId);
   }
 
   chrome.tabs.onRemoved.addListener(removeTabId);
@@ -59,7 +45,9 @@ var MRUTabManager = (function() {
 
   return {
     getTabsForWindowId: function(windowId) {
-      return mruListsByWindowId.get(windowId).pluck('tab');
+      return infoById.values().select(function(info) {
+        return info.tab.windowId == windowId;
+      }).sortBy(function(info) { return -info.selectedAt }).pluck('tab');
     }
   };
 }());

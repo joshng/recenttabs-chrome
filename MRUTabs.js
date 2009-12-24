@@ -75,7 +75,7 @@ function showMenu() {
 }
 
 function hideMenu() {
-  box.hide();
+  box && box.hide();
   active = false;
 }
 
