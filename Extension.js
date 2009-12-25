@@ -9,16 +9,16 @@ var MRUTabManager = (function() {
     }
   });
 
-  var infoById = new HashWithDefault(TabInfo.factory);
+  var tabInfoById = new HashWithDefault(TabInfo.factory);
 
   chrome.tabs.onUpdated.addListener(function(tabId) {
     chrome.tabs.get(tabId, function(tab) {
-      infoById.get(tab.id).update(tab);
+      tabInfoById.get(tab.id).update(tab);
     });
   });
 
   function onTabSelected(tab) {
-    infoById.get(tab.id).onSelected(tab);
+    tabInfoById.get(tab.id).onSelected(tab);
   }
 
   chrome.windows.getAll({populate: true}, function(windows) {
@@ -45,7 +45,7 @@ var MRUTabManager = (function() {
 
   return {
     getTabsForWindowId: function(windowId) {
-      return infoById.values().select(function(info) {
+      return tabInfoById.values().select(function(info) {
         return info.tab.windowId == windowId;
       }).sortBy(function(info) { return -info.selectedAt }).pluck('tab');
     }
