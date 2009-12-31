@@ -6,6 +6,7 @@ var MRUTabManager = (function() {
     onSelected: function(tab) {
       this.update(tab);
       this.selectedAt = new Date().getTime();
+      console.debug('selected: ', tab.title, tab);
     }
   });
 
@@ -37,12 +38,6 @@ var MRUTabManager = (function() {
 
   chrome.tabs.onRemoved.addListener(removeTabId);
 
-  chrome.tabs.onDetached.addListener(removeTabId);
-
-  chrome.tabs.onAttached.addListener(function(tabId, info) {
-    chrome.tabs.get(tabId, onTabSelected);
-  });
-
   return {
     getTabsForWindowId: function(windowId) {
       return tabInfoById.values().select(function(info) {
@@ -53,7 +48,6 @@ var MRUTabManager = (function() {
 }());
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-  console.debug('Request:', request);
   switch (request.action) {
     case 'list':
       sendResponse({tabs: MRUTabManager.getTabsForWindowId(sender.tab.windowId)});

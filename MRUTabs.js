@@ -68,7 +68,11 @@ function showMenu() {
   var rows = '';
   tabList.each(function(tab, idx) {
     var id = tabIdxId(idx, true);
-    rows = '<tr id="' + id + '"><td class="__mrutab_tab_icon"><img width="16" height="16" alt="?" src="' + tab.favIconUrl + '"/></td><td class="__mrutab_tab_title">' + truncateMiddle(tab.title, 32) + '</td><td class="__mrutab_tab_url">' + truncateMiddle(tab.url, 48) + '</td></tr>' + rows;
+    // TODO: find a decent DOM-builder utility to clean up this mess
+    var row = '<tr id="' + id + '"><td class="__mrutab_tab_icon">'
+    if (tab.favIconUrl) row += '<img width="16" height="16" alt="?" src="' + tab.favIconUrl + '"/>';
+    row += '</td><td class="__mrutab_tab_title">' + truncateMiddle(tab.title, 32) + '</td><td class="__mrutab_tab_url">' + truncateMiddle(tab.url, 48) + '</td></tr>';
+    rows = row + rows;
   });
   menu.html(rows);
   box.hide().fadeIn('fast');
