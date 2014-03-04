@@ -1,7 +1,11 @@
 {
+  "manifest_version": 2,
   "name": "RecentTabs",
   "version": "0.8.1",
-  "background_page": "background.html",
+  "background": {
+    "page": "background.html"
+  },
+  "content_security_policy": "default-src 'unsafe-eval'",
   "content_scripts": [ {
     "js": [
       "jquery.js",
